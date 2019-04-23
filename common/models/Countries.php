@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "countries".
@@ -25,16 +27,32 @@ class Countries extends \yii\db\ActiveRecord
         return 'countries';
     }
 
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['cnt_created'],
+                ],
+                'value' => function () {
+                    return time();
+                },
+            ],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['cnt_code', 'cnt_title', 'cnt_created'], 'required'],
+            [['cnt_code', 'cnt_title'], 'required'],
             [['cnt_created'], 'integer'],
             [['cnt_code'], 'string', 'max' => 3],
-            [['cnt_title'], 'string', 'max' => 32],
+            [['cnt_title'], 'string', 'max' => 64],
         ];
     }
 

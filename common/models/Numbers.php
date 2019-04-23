@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "numbers".
@@ -31,11 +33,27 @@ class Numbers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cnt_id', 'num_created'], 'integer'],
+            [['cnt_id'], 'integer'],
             [['num_created'], 'required'],
             [['num_number'], 'string', 'max' => 12],
             [['num_number'], 'unique'],
             [['cnt_id'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['cnt_id' => 'cnt_id']],
+        ];
+    }
+
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['num_created'],
+                ],
+                'value' => function () {
+                    return time();
+                },
+            ],
         ];
     }
 

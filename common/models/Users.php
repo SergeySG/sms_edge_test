@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "users".
@@ -25,13 +27,29 @@ class Users extends \yii\db\ActiveRecord
         return 'users';
     }
 
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['usr_created'],
+                ],
+                'value' => function () {
+                    return time();
+                },
+            ],
+        ];
+    }
+
+
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['usr_name', 'usr_created'], 'required'],
+            [['usr_name'], 'required'],
             [['usr_active', 'usr_created'], 'integer'],
             [['usr_name'], 'string', 'max' => 255],
         ];

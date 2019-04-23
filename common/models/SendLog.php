@@ -3,6 +3,8 @@
 namespace common\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "send_log".
@@ -34,10 +36,26 @@ class SendLog extends \yii\db\ActiveRecord
     {
         return [
             [['usr_id', 'num_id', 'log_success', 'log_created'], 'integer'],
-            [['log_created'], 'required'],
             [['log_message'], 'string', 'max' => 255],
             [['num_id'], 'exist', 'skipOnError' => true, 'targetClass' => Numbers::className(), 'targetAttribute' => ['num_id' => 'num_id']],
             [['usr_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['usr_id' => 'usr_id']],
+        ];
+    }
+
+
+
+    public function behaviors()
+    {
+        return [
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['log_created'],
+                ],
+                'value' => function () {
+                    return time();
+                },
+            ],
         ];
     }
 
