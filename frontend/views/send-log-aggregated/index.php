@@ -14,28 +14,17 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Create Send Log Aggregated', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php if(!empty($searchModel->date_from) && !empty($searchModel->date_to)):?>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'ag_log_id',
             'date',
-            'usr_id',
-            'cnt_id',
             'total_successful',
-            //'total_failed',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            'total_failed',
         ],
     ]); ?>
+    <?php endif;?>
 
 
 </div>

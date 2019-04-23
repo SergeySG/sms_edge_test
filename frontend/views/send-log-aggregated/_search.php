@@ -15,17 +15,23 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'ag_log_id') ?>
+<div class="row">
+    <div class="col-md-6">
 
-    <?= $form->field($model, 'date') ?>
+        <?= $form->field($model, 'date_from')->widget(\yii\jui\DatePicker::class, [
+            'dateFormat' => 'yyyy-MM-dd',
+        ]) ?>
+    </div>
+    <div class="col-md-6">
+        <?= $form->field($model, 'date_to')->widget(\yii\jui\DatePicker::class, [
+            'dateFormat' => 'yyyy-MM-dd',
+        ]) ?>
+    </div>
+</div>
 
-    <?= $form->field($model, 'usr_id') ?>
+    <?= $form->field($model, 'usr_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Users::find()->all(), 'usr_id', 'usr_name'), ['prompt'=>"Select User"]) ?>
 
-    <?= $form->field($model, 'cnt_id') ?>
-
-    <?= $form->field($model, 'total_successful') ?>
-
-    <?php // echo $form->field($model, 'total_failed') ?>
+    <?= $form->field($model, 'cnt_id')->dropDownList(\yii\helpers\ArrayHelper::map(\common\models\Countries::find()->all(), 'cnt_id', 'cnt_title'), ['prompt'=>"Select Country"]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

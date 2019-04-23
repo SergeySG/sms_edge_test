@@ -12,10 +12,14 @@ class CronController extends  Controller
 {
     /**
      * Aggregate all logs for previous day Cron task should be setted at the begin of day
+     * @param int $today
      * @throws \Exception
      */
-    public function actionAggregateLogs(){
+    public function actionAggregateLogs($today = 0 ){
         $date = new \DateTime('-1 day');
+        if($today){
+            $date = new \DateTime();
+        }
 
         /** Get all log data for previous day */
         $logs = SendLog::find()
@@ -33,8 +37,14 @@ class CronController extends  Controller
                 'total_successful'=>$log['total_successful'],
                 'total_failed'=>$log['total_failed'],
             ]);
-            $aggLog->save();
+            try{
+                $aggLog->save();
+            }
+            catch (\Exception $e){
+                echo $e->getMessage();
+            }
         }
+        SendLog::deleteAll(['FROM_UNIXTIME(log_created, "%Y-%m-%d")'=>$date->format('Y-m-d')]);
     }
 
 }

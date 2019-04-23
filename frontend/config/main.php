@@ -10,6 +10,8 @@ return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
+    'name' => "SMS Egde",
+    'defaultRoute'=>'send-log-aggregated/index',
     'controllerNamespace' => 'frontend\controllers',
     'components' => [
         'request' => [
@@ -36,14 +38,13 @@ return [
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

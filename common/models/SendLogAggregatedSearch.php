@@ -11,6 +11,8 @@ use common\models\SendLogAggregated;
  */
 class SendLogAggregatedSearch extends SendLogAggregated
 {
+    public $date_from;
+    public $date_to;
     /**
      * {@inheritdoc}
      */
@@ -18,7 +20,8 @@ class SendLogAggregatedSearch extends SendLogAggregated
     {
         return [
             [['ag_log_id', 'usr_id', 'cnt_id', 'total_successful', 'total_failed'], 'integer'],
-            [['date'], 'safe'],
+            [['date', 'date_from', 'date_to', 'date_from'], 'safe'],
+            [['date_to', 'date_from'], 'required']
         ];
     }
 
@@ -40,7 +43,7 @@ class SendLogAggregatedSearch extends SendLogAggregated
      */
     public function search($params)
     {
-        $query = SendLogAggregated::find();
+        $query = SendLogAggregated::find()->addSelect(['date','usr_id', 'cnt_id', 'total_successful'=>'SUM(total_successful)', 'total_failed'=>'SUM(total_failed)'])->groupBy('date');
 
         // add conditions that should always apply here
 
@@ -59,12 +62,12 @@ class SendLogAggregatedSearch extends SendLogAggregated
         // grid filtering conditions
         $query->andFilterWhere([
             'ag_log_id' => $this->ag_log_id,
-            'date' => $this->date,
             'usr_id' => $this->usr_id,
             'cnt_id' => $this->cnt_id,
             'total_successful' => $this->total_successful,
             'total_failed' => $this->total_failed,
         ]);
+        $query->andFilterWhere(['and', ['>=', 'date', $this->date_from], ['<=', 'date', $this->date_to]]);
 
         return $dataProvider;
     }
