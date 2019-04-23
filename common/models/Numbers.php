@@ -34,7 +34,6 @@ class Numbers extends \yii\db\ActiveRecord
     {
         return [
             [['cnt_id'], 'integer'],
-            [['num_created'], 'required'],
             [['num_number'], 'string', 'max' => 12],
             [['num_number'], 'unique'],
             [['cnt_id'], 'exist', 'skipOnError' => true, 'targetClass' => Countries::className(), 'targetAttribute' => ['cnt_id' => 'cnt_id']],

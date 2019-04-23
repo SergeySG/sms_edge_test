@@ -20,7 +20,7 @@ class RandomDataController extends Controller
         try{
             $this->generateRandomUsers($quantity);
             $this->generateCountries();
-            $this->generateRandomNumber($quantity);
+            $this->generateRandomNumbers($quantity);
             $this->generateSendLogs($quantity);
             echo "Test Data Created Successfully".PHP_EOL;
         }
