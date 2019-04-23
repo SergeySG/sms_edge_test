@@ -46,7 +46,7 @@ class m190423_084729_create_send_log_aggregated_table extends Migration
 
         // add foreign key for table `users`
         $this->addForeignKey(
-            'fk-usr_id',
+            'fk-ag_usr_id',
             'send_log_aggregated',
             'usr_id',
             'users',
@@ -57,7 +57,7 @@ class m190423_084729_create_send_log_aggregated_table extends Migration
 
         // add foreign key for table `countries`
         $this->addForeignKey(
-            'fk-cnt_id',
+            'fk-ag_cnt_id',
             'send_log_aggregated',
             'cnt_id',
             'countries',

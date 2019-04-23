@@ -33,13 +33,13 @@ class m190423_084715_create_send_log_table extends Migration
         );
 
 
-        // add foreign key for table `countries`
+        // add foreign key for table `numbers`
         $this->addForeignKey(
-            'fk-cnt_id',
+            'fk-num_id',
             'send_log',
-            'cnt_id',
-            'countries',
-            'cnt_id',
+            'num_id',
+            'numbers',
+            'num_id',
             'NO ACTION'
         );
     }
